@@ -13,7 +13,6 @@
     		<div class="row">
     			<div class="col-md-10">
                     <h1> Projet concernant la création d'un système expert</h1>
-
                     <h4><u> Etudiant participant au projet : </u></h4>
                         <p>
                             <ul>
@@ -27,11 +26,18 @@
                         </p>
                     </h4>  
     				<h2>Informations nécessaires pour la documentation</h2>
-                    <table class="table table-striped table-bordered table-hover">
-                         <?=getDoc()?>
+                    <table id="res" class="table table-striped table-bordered table-hover">
+                        <?=getDoc()?>
                     <table>
     			</div>
     		</div>
     	</div>
+		<script src="http://code.jquery.com/jquery-latest.min.js"></script>
+		<script src="js/jquery.dataTables.min.js"></script>
+		<script>
+			$(document).ready(function(){
+				$('#res').dataTable();
+			});
+		</script>
 	</body>
 </html>
