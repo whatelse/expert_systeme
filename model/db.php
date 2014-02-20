@@ -4,7 +4,7 @@
         private static $db;
         
         public static function connect(){
-            self::$db = mysqli_connect("$_SERVER","$_DATA","$_USER","$_PASS");
+            self::$db = mysqli_connect(_DB_SERVER_, _DB_USER_, _DB_PASSWD_, _DB_NAME_);
         }
         
         public static function disconnect(){

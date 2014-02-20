@@ -27,11 +27,12 @@
 
 	function getDoc(){
 		$enregistrements = Db::queryObject('SELECT * FROM arbre');
-		echo '<tr><th>No</th><th>Question</th><th>Non</th><th>Oui</th></tr>';
+		echo '<thead><tr><th>No</th><th>Question</th><th>Non</th><th>Oui</th></tr></thead><tbody>';
 		foreach ($enregistrements as $enregistrement) {
 			echo '<tr>';
 			afficherInfos($enregistrement);
 			echo '</tr>';
 		}
+		echo '</tbody>';
 	}
 ?>
