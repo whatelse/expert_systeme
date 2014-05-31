@@ -23,4 +23,3 @@
 			echo '<td>'.$suivant->question.' ?</td>';
 		}else echo '<td><span class="glyphicon glyphicon-ok"></span> <span style="color:green;">On a une solution !</span></td>'; 
 	}
-?>
