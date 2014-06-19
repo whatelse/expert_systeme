@@ -47,6 +47,16 @@
             self::disconnect();
         }
         
+        public static function querySingleArray($sql){
+            self::connect();
+            if ($res = mysqli_query(self::$db, $sql)){
+                $row = mysqli_fetch_assoc($res);
+                mysqli_free_result($res); 
+                return $row;
+            }
+            self::disconnect();
+        }
+        
         public static function query($sql){
             self::connect();
             return mysqli_query(self::$db, $sql) or die(mysqli_error(self::$db));
