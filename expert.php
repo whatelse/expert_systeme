@@ -39,7 +39,6 @@
             }
             
             function afficherLeBut(idBut){
-                //console.log(idBut);
                 $.ajax({
                     url : 'ajax/getBut.php',
                     type : 'POST',
@@ -87,17 +86,29 @@
                     type : 'POST',
                     data : 'id='+id
                 }).done(function(response){
-                    console.log(response);
                     libUsed.push(response);
                     afficherFaitsChoisis(response);                    
                 });
             }
             
-            $('#submit').click(function() {
-                getFaitById($('#valeur').val());
-                expertSystem.setFactValid($('#valeur').val(), true);                    
+            function submit(){
+                var input = $('#valeur');                
+                getFaitById(input.val());
+                expertSystem.setFactValid(input.val(), true);                    
                 var id = notUsed(expertSystem.inferForward());
                 afficherLeBut(id);
+                input.val('');
+                input.focus();
+            }
+            
+            $('#submit').click(function() {
+                submit();
+            });
+            
+            $('#valeur').keypress(function( event ) {
+                if ( event.which == 13 ) {
+                   submit();
+                }
             });
             
             $(document).ready(function(){
