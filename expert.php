@@ -13,7 +13,8 @@
             <div class="row">
                 <div class="col-md-10">
                     <h1>Langage de développement</h1>
-                    <div id="question"></div>
+                    <ol id="faitsChoisis" class="breadcrumb"></ol>
+                    <div id="question"></div>                
                     <div id="faits">                        
                     </div>
                     <input type="text" id="valeur">
@@ -29,6 +30,7 @@
         <script>
             var expertSystem = new ExpertSystem();
             var used = [];
+            var libUsed = [];
             
             function initialiserSystemeExpert(data){
                 for(var i = 0; i < data.length; i++){
@@ -50,7 +52,7 @@
                         /*var input = '<input type="radio" name="faits" value="' + data.faits_suivants_libelle[i].id + '" id="' + data.faits_suivants_libelle[i].id + '" />';
                         input += '<label for="' + data.faits_suivants_libelle[i].id + '">' + data.faits_suivants_libelle[i].libelle + '</label><br />';
                         */
-                        used.push(data.id);
+                        used.push(data.id);                        
                         var input = data.faits_suivants_libelle[i].id + ' - '+ data.faits_suivants_libelle[i].libelle + '<br>';
                         $('#faits').append(input);
                     }
@@ -71,7 +73,28 @@
                 return 0;
             }
             
+            function afficherFaitsChoisis(data){                
+                var div = $('#faitsChoisis');
+                div.html('');
+                for(var i = 0; i < libUsed.length; i++){
+                    div.append('<li>' + libUsed[i] + '</li>');
+                }
+            }
+            
+            function getFaitById(id){
+                $.ajax({
+                    url : 'ajax/getFait.php',
+                    type : 'POST',
+                    data : 'id='+id
+                }).done(function(response){
+                    console.log(response);
+                    libUsed.push(response);
+                    afficherFaitsChoisis(response);                    
+                });
+            }
+            
             $('#submit').click(function() {
+                getFaitById($('#valeur').val());
                 expertSystem.setFactValid($('#valeur').val(), true);                    
                 var id = notUsed(expertSystem.inferForward());
                 afficherLeBut(id);
