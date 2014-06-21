@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Client :  localhost:3306
--- Généré le :  Sam 21 Juin 2014 à 11:47
+-- Généré le :  Sam 21 Juin 2014 à 12:19
 -- Version du serveur :  5.5.37-0ubuntu0.12.04.1
 -- Version de PHP :  5.4.16
 
@@ -136,7 +136,7 @@ INSERT INTO `regle` (`id`, `but`, `faits_precedents`, `faits_suivants`) VALUES
 (79, 'Sur quel environnement etes-vous ?', '146,130,72', '147,148,149'),
 (84, 'Souhaitez-vous utiliser une plateforme Android ?', '156,130,72', '157,158'),
 (85, 'Quel type de plateforme souhaitez-vous utiliser ?', '158,156,130,72', '162,164'),
-(87, 'Souhaitez-vous créer un logiciel métier ou une application ?', '72', '130,131'),
+(87, 'Souhaitez-vous creer un logiciel metier ou une application ?', '72', '130,131'),
 (89, 'Swift', '9,7,71', ''),
 (90, 'Javascript', '13,4,71', ''),
 (91, 'Perl', '117,59,71', ''),
