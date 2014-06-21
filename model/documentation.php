@@ -1,4 +1,16 @@
 <?php
+	function afficherBdc(){
+		echo '<thead><tr><th>Numero</th><th>Libelle</th></thead><tbody>';
+		$enregistrements = Db::queryObject('SELECT id, fait FROM fait');
+		foreach ($enregistrements as $enregistrement) {
+			echo '<tr>';
+			echo '<td>'.$enregistrement->id.'</td>';
+			echo '<td>'.$enregistrement->fait.'</td>';
+			echo '</tr>';
+		}
+		echo '</tbody>';
+	}
+	
 	function afficherDoc(){		
 		echo '<thead><tr><th>No</th><th>Question</th><th>Non</th><th>Oui</th></tr></thead><tbody>';
 		$enregistrements = Db::queryObject('SELECT * FROM arbre');
