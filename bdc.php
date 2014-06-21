@@ -42,6 +42,12 @@
                         <?=afficherQuestions()?>
                         </table>
                     </div>
+                    <div class="row">
+                        <h3>Liste des langages</h3><hr>
+                        <table id="langages" class="table table-striped table-bordered table-hover">
+                        <?=afficherLangages()?>
+                        </table>
+                    </div>
                 </div>
             </div>
     	</div>
@@ -52,6 +58,7 @@
 	    $(document).ready(function(){
             $('#faits').dataTable();
             $('#questions').dataTable();
+            $('#langages').dataTable();
 	    });
 	</script>
     </body>

@@ -23,6 +23,18 @@
 		echo '</tbody>';
 	}
 	
+	function afficherLangages(){
+		echo '<thead><tr><th>Numero</th><th>Libelle</th></thead><tbody>';
+		$enregistrements = Db::queryObject('SELECT id, but FROM regle WHERE faits_suivants = \'\' GROUP BY but');
+		foreach ($enregistrements as $enregistrement) {
+			echo '<tr>';
+			echo '<td>'.$enregistrement->id.'</td>';
+			echo '<td>'.$enregistrement->but.'</td>';
+			echo '</tr>';
+		}
+		echo '</tbody>';
+	}
+	
 	function afficherDoc(){		
 		echo '<thead><tr><th>No</th><th>Question</th><th>Non</th><th>Oui</th></tr></thead><tbody>';
 		$enregistrements = Db::queryObject('SELECT * FROM arbre');
