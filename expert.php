@@ -29,41 +29,17 @@
         <script src="js/expert_system/rule.js"></script>
         <script>
             var expertSystem = new ExpertSystem();
-            var used = [];
-            var libUsed = [];
-            
-            function initialiserSystemeExpert(data){
-                for(var i = 0; i < data.length; i++){
-                    expertSystem.addRule(data[i].idBut, data[i].faits_precedents);
-                }
-            }
-            
-            function afficherLeBut(idBut){
-                $.ajax({
-                    url : 'ajax/getBut.php',
-                    type : 'POST',
-                    data : 'idBut='+idBut
-                }).done(function(response){
-                    var data = JSON.parse(response);
-                    $('#question').html(data.but);
-                    $('#faits').html("");
-                    for(var i = 0; i < data.faits_suivants_libelle.length; i++){
-                        /*var input = '<input type="radio" name="faits" value="' + data.faits_suivants_libelle[i].id + '" id="' + data.faits_suivants_libelle[i].id + '" />';
-                        input += '<label for="' + data.faits_suivants_libelle[i].id + '">' + data.faits_suivants_libelle[i].libelle + '</label><br />';
-                        */
-                        used.push(data.id);                        
-                        var input = data.faits_suivants_libelle[i].id + ' - '+ data.faits_suivants_libelle[i].libelle + '<br>';
-                        $('#faits').append(input);
-                    }
-                });
-            }                    
-            
-            function notUsed(tab){
+            var listeQuestionRepondue = [];
+            var listeDeFaitChoisi = [];
+            var input = $('#valeur');
+            var faits = $('#faits');
+
+            function notInListeQuestionRepondue(tab){
                 var present = false;
                 for(var j = 0; j < tab.length; j++){
                     var present = false;
-                    for(var i = 0; i < used.length; i++){                    
-                        if(used[i] == tab[j])
+                    for(var i = 0; i < listeQuestionRepondue.length; i++){                    
+                        if(listeQuestionRepondue[i] == tab[j])
                             present = true;                            
                     }
                     if(!present)
@@ -75,51 +51,87 @@
             function afficherFaitsChoisis(data){                
                 var div = $('#faitsChoisis');
                 div.html('');
-                for(var i = 0; i < libUsed.length; i++){
-                    div.append('<li>' + libUsed[i] + '</li>');
+                for(var i = 0; i < listeDeFaitChoisi.length; i++){
+                    div.append('<li>' + listeDeFaitChoisi[i] + '</li>');
                 }
             }
             
-            function getFaitById(id){
+            function obtenirFaitParIdentifiant(id, callback){
                 $.ajax({
                     url : 'ajax/getFait.php',
                     type : 'POST',
                     data : 'id='+id
                 }).done(function(response){
-                    libUsed.push(response);
-                    afficherFaitsChoisis(response);                    
+                    callback(response);                    
                 });
             }
             
-            function submit(){
-                var input = $('#valeur');                
-                getFaitById(input.val());
-                expertSystem.setFactValid(input.val(), true);                    
-                var id = notUsed(expertSystem.inferForward());
-                afficherLeBut(id);
-                input.val('');
-                input.focus();
+            function ajouterLeFait(dom){
+                obtenirFaitParIdentifiant(dom.val(), function(data){
+                    listeDeFaitChoisi.push(data);
+                    afficherFaitsChoisis(data);                    
+                });
+                expertSystem.setFactValid(dom.val(), true);
+                initialiserInput(dom);
+            }
+            
+            function envoyerLeFait(dom){
+                ajouterLeFait(dom);
+                afficherLeBut(notInListeQuestionRepondue(expertSystem.inferForward()));
+            }
+            
+            function appuiToucheEntree(event){
+                return event.which == 13;
             }
             
             $('#submit').click(function() {
-                submit();
+                envoyerLeFait(input);
             });
             
-            $('#valeur').keypress(function( event ) {
-                if ( event.which == 13 ) {
-                   submit();
+            input.keypress(function( event ) {
+                if (appuiToucheEntree(event)) {
+                   envoyerLeFait($(this));
                 }
             });
             
-            $(document).ready(function(){
+            function afficherLeBut(idBut){
+                $.ajax({
+                    url : 'ajax/getBut.php',
+                    type : 'POST',
+                    data : 'idBut='+idBut
+                }).done(function(response){
+                    var data = JSON.parse(response);
+                    $('#question').html(data.but);
+                    faits.html('');
+                    if(data.faits_suivants_libelle){
+                        for(var i = 0; i < data.faits_suivants_libelle.length; i++){
+                            listeQuestionRepondue.push(data.id);                        
+                            faits.append(data.faits_suivants_libelle[i].id + ' - '+ data.faits_suivants_libelle[i].libelle + '<br>');
+                        }
+                    }
+                });
+            }
+            
+            function initialiserInput(dom){
+                dom.val('');
+                dom.focus();
+            }
+            
+            function initialiserSystemeExpert(){
                 $.ajax({
                     url : 'ajax/getRegles.php'
                 }).done(function(response){
-                    initialiserSystemeExpert(JSON.parse(response));
+                    var data = JSON.parse(response);
+                    for(var i = 0; i < data.length; i++){
+                        expertSystem.addRule(data[i].idBut, data[i].faits_precedents);
+                    }
                 });
-                
-                var idBut = '';
-                afficherLeBut(idBut);
+            }
+            
+            $(document).ready(function(){            
+                initialiserSystemeExpert();
+                initialiserInput(input);
+                afficherLeBut('');
             });
         </script>
     </body>
