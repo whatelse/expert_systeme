@@ -13,7 +13,7 @@
 	
 	function afficherQuestions(){
 		echo '<thead><tr><th>Numero</th><th>Libelle</th></thead><tbody>';
-		$enregistrements = Db::queryObject('SELECT id, but FROM regle WHERE faits_suivants <> \'\'');
+		$enregistrements = Db::queryObject('SELECT id, but FROM regle WHERE faits_suivants <> \'\' GROUP BY but');
 		foreach ($enregistrements as $enregistrement) {
 			echo '<tr>';
 			echo '<td>'.$enregistrement->id.'</td>';
