@@ -1,7 +1,7 @@
 <?php
 	function afficherFaits(){
 		echo '<thead><tr><th>Numero</th><th>Libelle</th></thead><tbody>';
-		$enregistrements = Db::queryObject('SELECT id, fait FROM fait');
+		$enregistrements = Db::queryObject('SELECT id, fait FROM fait GROUP BY fait');
 		foreach ($enregistrements as $enregistrement) {
 			echo '<tr>';
 			echo '<td>'.$enregistrement->id.'</td>';
